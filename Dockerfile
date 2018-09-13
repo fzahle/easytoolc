@@ -8,16 +8,13 @@ ENV EASYBUILD_MODULES_TOOL Lmod
 
 MAINTAINER Lars Melwyn <melwyn (at) scico.io>
 
-USER root
-RUN echo -e " \n\
-[easyrepo] \n\
-name=EasyBuild repo \n\
-baseurl=http://46.101.150.132/centos/7.2.1511/os/x86_64 \n\
-enabled=yes \n\
-gpgcheck=0" > /etc/yum.repos.d/easyrepo.repo
-
-RUN yum -y update && yum -y install foss-2018b.eb && yum clean all && chown -R apps.apps /opt/apps
-
 USER apps
+RUN module load EasyBuild
+RUN git clone https://github.com/easybuilders/easybuild-easyconfigs \
+  && export EASYBUILD_ROBOT_PATHS=$(pwd)/easybuild-easyconfigs/easybuild/easyconfigs \
+  && eb easybuild-easyconfigs/easybuild/easyconfigs/f/foss/foss-2018b.eb easybuild-easyconfigs/easybuild/easyconfigs/p/Python/Python-2.7.15-foss-2018b.eb --robot
+
+RUN module load Python-2.7.15-foss-2018b \
+  && virtualenv py27 --system-site-packages
 
 CMD /bin/bash
