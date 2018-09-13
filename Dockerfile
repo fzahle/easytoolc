@@ -16,7 +16,7 @@ baseurl=http://46.101.150.132/centos/7.2.1511/os/x86_64 \n\
 enabled=yes \n\
 gpgcheck=0" > /etc/yum.repos.d/easyrepo.repo
 
-RUN yum -y update && yum -y install master  && yum clean all && chown -R apps.apps /opt/apps
+RUN yum -y update && yum -y install foss-2018b.eb && yum clean all && chown -R apps.apps /opt/apps
 
 USER apps
 
